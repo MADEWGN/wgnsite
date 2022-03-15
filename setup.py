@@ -13,7 +13,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(
-    name='pastekan',
+    name='wgnsite',
     version='0.0.1',
     url='https://madewgn.my.id',
     description='Simple SSG written in Python.',
