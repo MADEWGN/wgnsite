@@ -19,7 +19,29 @@ from markdown2 import markdown
 
 
 def help():
-    print("ini pesan help help")
+
+
+        
+
+
+    pesanh = """
+wgnsite - a Simple Static Site Generator.
+
+Usage:
+    wgnsite [flag]
+    wgnsite --> for generate output from your site
+
+
+
+-h --help     show this message.
+-v --version  show version information.
+-n --new      make a new site folderself.
+-p --post     make a new post. 
+
+"""
+
+
+    print(pesanh)
     exit()
 
 def newsite(root_path):
@@ -49,6 +71,7 @@ Visit https://gohugo.io/ for quickstart guide and full documentation. """
         
 
     print(tulissan)
+    exit()
 
 def main():
     # mengubah markdown menjadi html
@@ -105,6 +128,6 @@ if __name__ == '__main__':
 	if argv[1] in ('-h', '--help'):
 		help()
 	
-	elif argv[1] == '-new':
+	elif argv[1] == ('-n', '--new'):
 		NameSite = argv[2]
 		newsite(NameSite)
