@@ -14,7 +14,7 @@ except ImportError:
 
 setup(
     name='wgnsite',
-    version='0.0.1',
+    version='0.0.2',
     url='https://madewgn.my.id',
     description='Simple SSG written in Python.',
     long_description=read_md('README.md'),
