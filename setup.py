@@ -26,7 +26,8 @@ setup(
     install_requires=[
         'requests',
         'jinja2',
-        'markdown2'
+        'markdown2',
+        'docopt'
     ],
     classifiers=[
         'Environment :: Console',
