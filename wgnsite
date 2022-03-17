@@ -3,7 +3,7 @@
 
 
 import sys
-
+from wgnsite_lib import *
 from sys import argv
 import urllib
 from urllib import request
@@ -15,6 +15,17 @@ from datetime import datetime
 from jinja2 import Environment, PackageLoader
 from markdown2 import markdown
 
+
+
+def post(judul):
+    baca = open("archetypes/default.md", "r")
+
+    f = open(judul)
+
+    f.write(baca)
+    f.close()
+
+    exit()
 
 
 
@@ -55,73 +66,65 @@ def newsite(root_path):
         os.mkdir(path)
         
 
-    tulissan = """Congratulations! Your new Hugo site is created in /data/data/com.termux/files/home/site/p/tes.
-
-Just a few more steps and you're ready to go:
-
-1. Download a theme into the same-named folder.
-   Choose a theme from https://themes.gohugo.io/ or
-   create your own with the "hugo new theme <THEMENAME>" command.
-2. Perhaps you want to add some content. You can add single files
-   with "hugo new <SECTIONNAME>/<FILENAME>.<FORMAT>".
-3. Start the built-in live server via "hugo server".
-
-Visit https://gohugo.io/ for quickstart guide and full documentation. """
-
-        
+    tulissan = """Congratulations! Your new site is created !!
+"""        
 
     print(tulissan)
     exit()
 
 def main():
+    try:
     # mengubah markdown menjadi html
 
     #os.mkdir("output")
-    POSTS = {}
+        POSTS = {}
 
-    for markdown_post in os.listdir('content'):
-        file_path = os.path.join('content', markdown_post)
+        for markdown_post in os.listdir('content'):
+            file_path = os.path.join('content', markdown_post)
 
-        with open(file_path, 'r') as file:
-            POSTS[markdown_post] = markdown(file.read(), extras=['metadata'])
+            with open(file_path, 'r') as file:
+                POSTS[markdown_post] = markdown(file.read(), extras=['metadata'])
 
     
-    POSTS = {
-        post: POSTS[post] for post in sorted(POSTS, key=lambda post: datetime.strptime(POSTS[post].metadata['date'], '%Y-%m-%d'), reverse=True)
-    }
+        POSTS = {
+            post: POSTS[post] for post in sorted(POSTS, key=lambda post: datetime.strptime(POSTS[post].metadata['date'], '%Y-%m-%d'), reverse=True)
+        }
 
-    env = Environment(loader=PackageLoader('main', 'templates'))
-    home_template = env.get_template('home.html')
-    post_template = env.get_template('post.html')
+        env = Environment(loader=PackageLoader('main', 'templates'))
+        home_template = env.get_template('home.html')
+        post_template = env.get_template('post.html')
 
-    posts_metadata = [POSTS[post].metadata for post in POSTS]
-    tags = [post['tags'] for post in posts_metadata]
-    home_html = home_template.render(posts=posts_metadata, tags=tags)
+        posts_metadata = [POSTS[post].metadata for post in POSTS]
+        tags = [post['tags'] for post in posts_metadata]
+        home_html = home_template.render(posts=posts_metadata, tags=tags)
 
-    with open('output/index.html', 'w') as file:
-        file.write(home_html)
+        with open('output/index.html', 'w') as file:
+            file.write(home_html)
 
-    for post in POSTS:
-        post_metadata = POSTS[post].metadata
+        for post in POSTS:
+            post_metadata = POSTS[post].metadata
 
-    post_data = {
-        'content': POSTS[post],
-        'title': post_metadata['title'],
-        'date': post_metadata['date']
-    }
+        post_data = {
+            'content': POSTS[post],
+            'title': post_metadata['title'],
+            'date': post_metadata['date']
+        }
 
-    post_html = post_template.render(post=post_data)
-    post_file_path = 'output/posts/{slug}.html'.format(slug=post_metadata['slug'])
+        post_html = post_template.render(post=post_data)
+        post_file_path = 'output/posts/{slug}.html'.format(slug=post_metadata['slug'])
 
-    os.makedirs(os.path.dirname(post_file_path), exist_ok=True)
-    with open(post_file_path, 'w') as file:
-        file.write(post_html)
-    exit()
-        
+        os.makedirs(os.path.dirname(post_file_path), exist_ok=True)
+        with open(post_file_path, 'w') as file:
+            file.write(post_html)
+        exit()
+    
+    except:
+        exit("Error: site not falid")
 
 
 
 if __name__ == '__main__':
+
 	if len(argv) == 1:
 		main()
 
@@ -129,5 +132,13 @@ if __name__ == '__main__':
 		help()
 	
 	elif argv[1] == ('-n', '--new'):
+	
 		NameSite = argv[2]
 		newsite(NameSite)
+    
+	elif argv[1] == ('-p', '--post'):
+	
+		JudulP = argv[2]
+		newsite(JudulP)
+
+

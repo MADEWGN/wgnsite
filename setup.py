@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
+
 except ImportError:
     from distutils.core import setup
 
@@ -14,7 +15,8 @@ except ImportError:
 
 setup(
     name='wgnsite',
-    version='0.0.3',
+    packages=find_packages(),
+    version='0.0.5',
     url='https://madewgn.my.id',
     description='Simple SSG written in Python.',
     long_description=read_md('README.md'),
