@@ -2,4 +2,5 @@ deploy.sh
 build
 dist
 wgnsite.egg-info
+.github
 

@@ -3,7 +3,7 @@
 
 
 import sys
-from wgnsite_lib import *
+from wgnsite_lib import server
 from sys import argv
 import urllib
 from urllib import request
@@ -14,26 +14,12 @@ import os
 from datetime import datetime
 from jinja2 import Environment, PackageLoader
 from markdown2 import markdown
-
-
-
-def post(judul):
-    baca = open("archetypes/default.md", "r")
-
-    f = open(judul)
-
-    f.write(baca)
-    f.close()
-
-    exit()
+import http.server
+import socketserver
 
 
 
 def help():
-
-
-        
-
 
     pesanh = """
 wgnsite - a Simple Static Site Generator.
@@ -51,41 +37,40 @@ Usage:
 
 """
 
-
     print(pesanh)
     exit()
 
+
 def newsite(root_path):
     os.mkdir(root_path)
-    
-  
-    list = ['output', 'content', 'templates'] 
 
-    for items in list: 
-        path = os.path.join(root_path, items) 
+    list = ['output', 'content', 'templates']
+
+    for items in list:
+        path = os.path.join(root_path, items)
         os.mkdir(path)
-        
 
     tulissan = """Congratulations! Your new site is created !!
-"""        
+"""
 
     print(tulissan)
     exit()
 
+
 def main():
     try:
-    # mengubah markdown menjadi html
+        # mengubah markdown menjadi html
 
-    #os.mkdir("output")
+        # os.mkdir("output")
         POSTS = {}
 
         for markdown_post in os.listdir('content'):
             file_path = os.path.join('content', markdown_post)
 
             with open(file_path, 'r') as file:
-                POSTS[markdown_post] = markdown(file.read(), extras=['metadata'])
+                POSTS[markdown_post] = markdown(
+                    file.read(), extras=['metadata'])
 
-    
         POSTS = {
             post: POSTS[post] for post in sorted(POSTS, key=lambda post: datetime.strptime(POSTS[post].metadata['date'], '%Y-%m-%d'), reverse=True)
         }
@@ -111,34 +96,49 @@ def main():
         }
 
         post_html = post_template.render(post=post_data)
-        post_file_path = 'output/posts/{slug}.html'.format(slug=post_metadata['slug'])
+        post_file_path = 'output/posts/{slug}.html'.format(
+            slug=post_metadata['slug'])
 
         os.makedirs(os.path.dirname(post_file_path), exist_ok=True)
         with open(post_file_path, 'w') as file:
             file.write(post_html)
         exit()
-    
+
     except:
         exit("Error: site not falid")
+
+def ser(p):
+    PORT = 7000
+
+    handler = http.server.SimpleHTTPRequestHandler
+
+    with socketserver.TCPServer(("", PORT), handler) as httpd:
+        print("Server started at localhost:" + str(PORT))
+        httpd.serve_forever()
+        exit()
+
 
 
 
 if __name__ == '__main__':
 
-	if len(argv) == 1:
-		main()
+    if len(argv) == 1:
+        main()
 
-	if argv[1] in ('-h', '--help'):
-		help()
-	
-	elif argv[1] == ('-n', '--new'):
-	
-		NameSite = argv[2]
-		newsite(NameSite)
-    
-	elif argv[1] == ('-p', '--post'):
-	
-		JudulP = argv[2]
-		newsite(JudulP)
+    if argv[1] in ('-h', '--help'):
+        help()
 
+    elif argv[1] == ('-n', '--new'):
+
+        NameSite = argv[2]
+        newsite(NameSite)
+
+    elif argv[1] == ('-p', '--post'):
+
+        JudulP = argv[2]
+        newsite(JudulP)
+
+    elif argv[1] == ('-s', '--server'):
+        p = 7000
+        ser(p)
 
