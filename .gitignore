@@ -3,4 +3,4 @@ build
 dist
 wgnsite.egg-info
 .github
-
+wgnsite_lib/__pycache__
