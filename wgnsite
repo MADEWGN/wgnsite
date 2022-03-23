@@ -18,6 +18,8 @@ import http.server
 import socketserver
 
 
+ver = "0.0.5"
+
 
 def help():
 
@@ -117,8 +119,9 @@ def ser(p):
         httpd.serve_forever()
         exit()
 
-
-
+def versi():
+    print("wgnsite version", ver)
+    exit()
 
 if __name__ == '__main__':
 
@@ -128,17 +131,20 @@ if __name__ == '__main__':
     if argv[1] in ('-h', '--help'):
         help()
 
-    elif argv[1] == ('-n', '--new'):
+    
+    if argv[1] in ('-v', '--version'):
+        versi()
+    
+    if argv[1] in ('-n', '--new'):
 
         NameSite = argv[2]
         newsite(NameSite)
 
-    elif argv[1] == ('-p', '--post'):
+    if argv[1] in ('-p', '--post'):
 
         JudulP = argv[2]
         newsite(JudulP)
 
-    elif argv[1] == ('-s', '--server'):
-        p = 7000
-        ser(p)
+    if argv[1] in ('-s', '--server'):
+        server.webserver()
 
